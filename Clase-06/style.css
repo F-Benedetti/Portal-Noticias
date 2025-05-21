@@ -1,0 +1,150 @@
+/* === Base === */
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin: 0 19rem;
+    text-align: left;
+}
+
+/* === Reutilizables === */
+.nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #011d26;
+    font-size: 1rem;
+    line-height: 50px;
+    white-space: nowrap; /* 💡 Esto evita que el texto se parta en dos líneas */
+}
+
+.logo-img {
+    width: 54px;
+    height: 54px;
+    vertical-align: middle;
+}
+
+.live-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.color-cube {
+    width: 10px;
+    height: 10px;
+    background-color: #80d5ff;
+    display: inline-block;
+}
+
+/* === Estilos específicos === */
+.primary-nav {
+    padding: 10px 0 10px 22rem;     /* padding: [arriba] [derecha] [abajo] [izquierda] */
+}
+
+.nav-link img {
+    display: block;              /* elimina espacio blanco inferior */
+    width: 20px;                 /* tamaño de la imagen */
+    height: 20px;
+    object-fit: contain;
+}
+
+.secondary-nav {
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    padding-left: 20px;
+}
+
+.secondary-nav .nav-list {
+    display: flex;
+    justify-content: flex-start; /* Los items se alinean al principio */
+    flex-wrap: nowrap; /* No se deben envolver */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+}
+
+/* === Título e imagen principal === */
+.tit {
+    font-weight: 900;
+    font-size: 2.8rem;
+    color: #011d26;
+}
+
+.txt-img {
+    font-size: 0.65rem;
+    color: #011d26;
+}
+
+.img-putin {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* Responsive Navegadores (Primario y secundario) */
+@media (max-width: 1024px) {
+    .primary-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 20px;
+        padding: 1rem 0;
+    }
+
+    .primary-nav .nav-list {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .primary-nav .nav-list li:not(:first-child) {
+        display: none;                              /* Oculta todos los elementos excepto el primero */
+    }
+
+    .test{
+        display:inline-flex;
+        align-items: center;
+        
+    }
+
+    .tit {
+        font-size: 2.2rem;
+    }
+
+    main {
+        margin: 2rem;
+    }
+}
+
+/* Responsive titulo */
+@media (max-width: 1024px) {
+    .tit {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .tit {
+        font-size: 1.6rem; 
+    }
+}
+
+@media (max-width: 480px) {
+    .tit {
+        font-size: 1.3rem;
+    }
+}
+
+

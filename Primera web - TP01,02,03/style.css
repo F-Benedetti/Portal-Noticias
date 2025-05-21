@@ -1,0 +1,27 @@
+nav ul {
+    list-style: none;         /* Elimina los puntos de la lista */
+    margin: 0;
+    padding: 0;
+    display: flex;            /* Pone los <li> en línea */
+    justify-content: flex-start; /* Alinea todo a la izquierda */
+  }
+  
+  nav li {
+    margin-right: 20px;       /* Espacio entre los ítems */
+  }
+  
+  nav a {
+    font-size: 13px;
+    color: #f15a08;
+    font-family: 'Space Mono',monospace;
+  }
+  
+
+.titulo{
+        font-size: 50px;
+        line-height: 60px;
+        color: #202020;
+        margin-bottom: 19px;
+        font-weight: 800;
+        font-family: 'Encode Sans',sans-serif;
+}
