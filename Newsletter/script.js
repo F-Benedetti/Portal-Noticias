@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
           return "Edad inválida (solo números enteros).";
         }
         var n = parseInt(valor, 10);
-        if (n <= 18) {
+        if (n < 18) {
           return "Debes ser mayor de 18 años.";
         }
         return "";
