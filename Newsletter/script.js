@@ -1,7 +1,9 @@
-// script.js
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   var form = document.getElementById("subscriptionForm");
+  var modal = document.getElementById("modal");
+  var modalMensaje = document.getElementById("modal-mensaje");
+  var cerrarModal = document.getElementById("cerrarModal");
+
   var inputs = {
     1: document.getElementById("fullname"),
     2: document.getElementById("email"),
@@ -73,21 +75,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         var calle = partes[0];
         var numero = partes.slice(1).join("").toLowerCase();
-        
+
         var reCalle = /^[A-Za-záéíóúÁÉÍÓÚñÑ]+$/;
         if (!reCalle.test(calle)) {
           return "La parte de la calle debe contener solo letras.";
         }
-        // Validar número: solo dígitos o "s/n"
         var reNumero = /^[0-9]+$/;
         if (!(reNumero.test(numero) || numero === "s/n")) {
           return 'La parte del número debe ser solo dígitos o "s/n".';
         }
-        // Validar suma de longitud (calle + número) >= 5
         if (calle.length + numero.length < 5) {
           return "La suma de letras y dígitos debe ser al menos 5 caracteres.";
         }
-        return "";;  
+        return "";
       case 8:
         var reCiudad = /^[A-Za-záéíóúÁÉÍÓÚñÑ]{3,}$/;
         if (!reCiudad.test(valor.trim())) {
@@ -112,35 +112,39 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function showError(inputElem, mensaje) {
     var errorEl = document.getElementById("error-" + inputElem.id);
-    if (mensaje) {
-      errorEl.textContent = mensaje;
-      errorEl.style.display = "block";
-    } else {
-      errorEl.textContent = "";
-      errorEl.style.display = "none";
-    }
+    errorEl.textContent = mensaje;
+    errorEl.style.display = mensaje ? "block" : "none";
   }
+
+  function mostrarModal(texto) {
+    modalMensaje.innerHTML = texto;
+    modal.classList.remove("oculto");
+  }
+
+  cerrarModal.addEventListener("click", () => {
+    modal.classList.add("oculto");
+  });
 
   var allValues = {};
 
   for (var num in inputs) {
     if (inputs.hasOwnProperty(num)) {
-      (function(n) {
+      (function (n) {
         var campoElem = inputs[n];
-        campoElem.addEventListener("blur", function() {
+        campoElem.addEventListener("blur", function () {
           var val = campoElem.value;
           allValues[n] = val;
           var errorMsg = validar(parseInt(n, 10), val, allValues);
           showError(campoElem, errorMsg);
         });
-        campoElem.addEventListener("focus", function() {
+        campoElem.addEventListener("focus", function () {
           showError(campoElem, "");
         });
       })(num);
     }
   }
 
-  form.addEventListener("submit", function(e) {
+  form.addEventListener("submit", function (e) {
     e.preventDefault();
     var tieneErrores = false;
     for (var num2 in inputs) {
@@ -155,8 +159,42 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       }
     }
+
     if (!tieneErrores) {
-      form.reset();
+      const datos = {};
+      for (let num in inputs) {
+        datos[inputs[num].name] = inputs[num].value;
+      }
+
+      const url = new URL("https://jsonplaceholder.typicode.com/posts");
+      Object.entries(datos).forEach(([key, value]) => {
+        url.searchParams.append(key, value);
+      });
+
+      fetch(url)
+        .then((res) => {
+          if (!res.ok) throw new Error("Error en la respuesta del servidor");
+          return res.json();
+        })
+        .then((data) => {
+          mostrarModal(`<h3>Suscripción exitosa</h3><pre>${JSON.stringify(data, null, 2)}</pre>`);
+          localStorage.setItem("newsletterData", JSON.stringify(datos));
+          form.reset();
+        })
+        .catch((err) => {
+          mostrarModal(`<h3>Fallo en la suscripción</h3><p>${err.message}</p>`);
+        });
     }
   });
+
+  const datosGuardados = localStorage.getItem("newsletterData");
+  if (datosGuardados) {
+    const datos = JSON.parse(datosGuardados);
+    for (let num in inputs) {
+      let name = inputs[num].name;
+      if (datos[name]) {
+        inputs[num].value = datos[name];
+      }
+    }
+  }
 });
